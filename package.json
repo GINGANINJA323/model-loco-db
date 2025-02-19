@@ -1,0 +1,34 @@
+{
+  "name": "model-loco-db",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "DEV=true nodemon server/index.ts",
+    "build": "webpack --config webpack.prod.ts --progress"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "styled-components": "^6.1.14",
+    "webpack": "^5.97.1",
+    "webpack-cli": "^6.0.1"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
+    "@types/react": "^19.0.4",
+    "@types/react-dom": "^19.0.2",
+    "css-loader": "^7.1.2",
+    "nodemon": "^3.1.9",
+    "style-loader": "^4.0.0",
+    "ts-loader": "^9.5.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.3",
+    "webpack-dev-middleware": "^7.4.2"
+  }
+}

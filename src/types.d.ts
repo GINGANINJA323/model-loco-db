@@ -6,3 +6,9 @@ export interface Train {
     trainCode: string;
     trainDccAddress: number;
 }
+
+export interface LightTrain {
+    id: string;
+    trainClass: string;
+    trainName: string;
+}

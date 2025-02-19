@@ -10,7 +10,8 @@ api.get('/all-trains', async(req, res) => {
     if (!dbResponse) {
         res.status(500).send();
     } else {
-        res.status(200).json(dbResponse);
+        const trains = dbResponse.map(t => ({ id: t.id, trainName: t.trainName, trainClass: t.trainClass }));
+        res.status(200).json(trains);
     }
 });
 

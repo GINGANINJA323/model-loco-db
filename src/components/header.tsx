@@ -11,6 +11,7 @@ const HeaderContainer = styled.div`
     justify-content: center;
     align-items: center;
     background-color: #FFF;
+    height: 80px;
 `;
 
 const Header = (props: HeaderProps) => {

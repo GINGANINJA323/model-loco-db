@@ -3,6 +3,7 @@ import Header from './components/header';
 import styled from 'styled-components';
 import Container from './components/container';
 import { Train } from './types';
+import Sidebar from './components/sidebar';
 
 const AppContainer = styled.div`
     background-color: #dbdbdb;
@@ -11,6 +12,7 @@ const AppContainer = styled.div`
 
 const App = () => {
     const [trains, setTrains] = React.useState<Train[]>([]);
+    const [selectedTrain, setSelectedTrain] = React.useState('');
 
     const getAllTrains = async() => {
         const response = await fetch('/api/all-trains');
@@ -31,7 +33,7 @@ const App = () => {
     return (
         <AppContainer>
             <Header />
-            
+            <Sidebar trains={trains.map(t => ({ name: `${t.trainClass} "${t.trainName}"`, id: t.id, onClick: () => setSelectedTrain(t.id) }))} />
         </AppContainer>
     );
 }

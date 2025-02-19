@@ -13,6 +13,9 @@ interface StyledContainerProps {
 const StyledContainer = styled.div<StyledContainerProps>`
     background-color: #FFF;
     width: ${props => props.width}%;
+    padding: 5px 0px;
+    margin: 10px 10px;
+    border-radius: 10px;
 `;
 
 const Container = (props: ContainerProps) => {

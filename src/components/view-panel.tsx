@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Container from './container';
 import { Train } from '../types';
 import { DccStatus } from '../enums';
+import Collapsible from './collapsible';
 
 interface ViewPanelProps {
     id: string;
@@ -40,16 +41,19 @@ const ViewPanel = (props: ViewPanelProps) => {
         getTrainData();
     }, [id]);
 
-    const keyLabelMap: { [key: string]: string } = {
+    const trainKeyLabelMap: { [key: string]: string } = {
         trainClass: 'Class',
         trainName: 'Name',
-        trainManufacturer: 'Manufacturer',
         trainCode: 'Code',
+        trainLivery: 'Livery',
+        trainWhyteDesignation: 'Wheel Formation',
+    }
+
+    const modelKeyLabelMap: { [key: string]: string } = {
+        trainManufacturer: 'Manufacturer',
         trainDccStatus: 'DCC Status',
         trainDccAddress: 'DCC Address',
-        trainLivery: 'Livery',
         trainGauge: 'Gauge',
-        trainWhyteDesignation: 'Wheel Formation',
         trainManufacturerCode: 'Product Code'
     }
 
@@ -59,19 +63,34 @@ const ViewPanel = (props: ViewPanelProps) => {
                 trainData ? 
                     <>
                         <h2>{`${trainData.trainManufacturer} ${trainData.trainClass} ${trainData.trainWhyteDesignation} ${trainData.trainName ? `"${trainData.trainName}"` : ''}`}</h2>
-                        <Table>
-                            {
-                                Object.keys(keyLabelMap).map((k) =>
-                                    k === 'trainDccAddress' && trainData['trainDccStatus'] === DccStatus.Incompatible ? 
-                                        null : 
+                        <Collapsible label={'Locomotive Information'} defaultOpen>
+                            <Table>
+                                {
+                                    Object.keys(trainKeyLabelMap).map((k) =>
                                         <TableRow>
-                                            <p>{keyLabelMap[k]}</p>
+                                            <p>{trainKeyLabelMap[k]}</p>
                                             {/* @ts-ignore - need to hard type this */}
                                             <p>{trainData[k]}</p>
                                         </TableRow>
-                                )
-                            }
-                        </Table>
+                                    )
+                                }
+                            </Table>
+                        </Collapsible>
+                        <Collapsible label={'Model Information'}>
+                            <Table>
+                                {
+                                    Object.keys(modelKeyLabelMap).map((k) =>
+                                        k === 'trainDccAddress' && trainData['trainDccStatus'] !== DccStatus.Fitted ? 
+                                            null : 
+                                            <TableRow>
+                                                <p>{modelKeyLabelMap[k]}</p>
+                                                {/* @ts-ignore - need to hard type this */}
+                                                <p>{trainData[k]}</p>
+                                            </TableRow>
+                                    )
+                                }
+                            </Table>
+                        </Collapsible>
                     </> :
                     <p>Select a train to continue...</p>
             }

@@ -2,6 +2,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 import Container from './container';
 import { Train } from '../types';
+import { DccStatus } from '../enums';
 
 interface ViewPanelProps {
     id: string;
@@ -44,9 +45,9 @@ const ViewPanel = (props: ViewPanelProps) => {
         trainName: 'Name',
         trainManufacturer: 'Manufacturer',
         trainCode: 'Code',
+        trainDccStatus: 'DCC Status',
         trainDccAddress: 'DCC Address',
         trainLivery: 'Livery',
-        trainDccStatus: 'DCC Status',
         trainGauge: 'Gauge',
         trainWhyteDesignation: 'Wheel Formation',
         trainManufacturerCode: 'Product Code'
@@ -61,11 +62,13 @@ const ViewPanel = (props: ViewPanelProps) => {
                         <Table>
                             {
                                 Object.keys(keyLabelMap).map((k) =>
-                                    <TableRow>
-                                        <p>{keyLabelMap[k]}</p>
-                                        {/* @ts-ignore - need to hard type this */}
-                                        <p>{trainData[k]}</p>
-                                    </TableRow>
+                                    k === 'trainDccAddress' && trainData['trainDccStatus'] === DccStatus.Incompatible ? 
+                                        null : 
+                                        <TableRow>
+                                            <p>{keyLabelMap[k]}</p>
+                                            {/* @ts-ignore - need to hard type this */}
+                                            <p>{trainData[k]}</p>
+                                        </TableRow>
                                 )
                             }
                         </Table>

@@ -1,5 +1,5 @@
 export enum DccStatus {
-    Fitted = 'fitted',
-    Ready = 'ready',
-    Incompatible = 'incompatible'
+    Fitted = 'Fitted',
+    Ready = 'Ready',
+    Incompatible = 'Incompatible'
 }

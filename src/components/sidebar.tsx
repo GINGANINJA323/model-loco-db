@@ -10,6 +10,7 @@ interface Train {
 
 interface SidebarProps {
     trains: Train[]
+    openModal: () => void;
 }
 
 const SidebarButton = styled.button`
@@ -25,13 +26,14 @@ const SidebarButton = styled.button`
 `;
 
 const Sidebar = (props: SidebarProps) => {
-    const { trains } = props;
+    const { trains, openModal } = props;
 
     return (
         <Container width={30}>
             {
-                trains.map(t => <SidebarButton onClick={t.onClick}>{t.name}</SidebarButton>)
+                trains.map(t => <SidebarButton key={t.name} onClick={t.onClick}>{t.name}</SidebarButton>)
             }
+            <SidebarButton onClick={openModal}>Add new train</SidebarButton>
         </Container>
     );
 }

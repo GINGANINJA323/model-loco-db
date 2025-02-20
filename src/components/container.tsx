@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 interface ContainerProps {
     width: number;
-    children: React.JSX.Element | React.JSX.Element[];
+    children: React.ReactNode
 }
 
 interface StyledContainerProps {
@@ -16,6 +16,7 @@ const StyledContainer = styled.div<StyledContainerProps>`
     padding: 5px 0px;
     margin: 10px 10px;
     border-radius: 10px;
+    overflow: scroll;
 `;
 
 const Container = (props: ContainerProps) => {

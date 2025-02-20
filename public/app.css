@@ -4,3 +4,6 @@ html, body {
 * {
     font-family: "Barlow", serif;
 }
+#new-train-modal {
+    width: 80%;
+}

@@ -30,6 +30,20 @@ api.get('/get-train/:id', async(req, res) => {
     } else {
         res.status(200).json(dbResponse);
     }
+});
+
+api.post('/new-train', async(req, res) => {
+    if (!req.body) {
+        res.status(400).send();
+        return;
+    }
+    const dbResult = DB.addNewRecord(req.body);
+
+    if (!dbResult) {
+        res.status(500).send();
+    } else {
+        res.status(200).send();
+    }
 })
 
 export default api;

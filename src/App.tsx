@@ -1,9 +1,10 @@
 import * as React from 'react';
 import Header from './components/header';
 import styled from 'styled-components';
-import { LightTrain } from './types';
+import { LightTrain, Train } from './types';
 import Sidebar from './components/sidebar';
 import ViewPanel from './components/view-panel';
+import TrainModal from './components/new-train-modal';
 
 const AppContainer = styled.div`
     background-color: #dbdbdb;
@@ -19,6 +20,9 @@ const ContentComposer = styled.div`
 const App = () => {
     const [trains, setTrains] = React.useState<LightTrain[]>([]);
     const [selectedTrain, setSelectedTrain] = React.useState('');
+    const [ntmOpen, setNtmOpen] = React.useState(false);
+
+    const ntmRef = React.useRef<HTMLDialogElement>(null);
 
     const getAllTrains = async() => {
         const response = await fetch('/api/all-trains');
@@ -36,13 +40,45 @@ const App = () => {
         getAllTrains();
     }, []);
 
+    React.useEffect(() => {
+        if (trains.length) {
+            setSelectedTrain(trains[0].id);
+        }
+    }, [trains]);
+
+    React.useLayoutEffect(() => {
+        if (ntmRef.current?.open && !ntmOpen) {
+            ntmRef.current?.close();
+        } if (!ntmRef.current?.open && ntmOpen) {
+            ntmRef.current?.showModal();
+        }
+    }, [ntmOpen]);
+
+    const addTrain = async(train: Train) => {
+        const response = await fetch('/api/new-train', {
+            method: 'POST',
+            body: JSON.stringify(train),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (!response.ok) {
+            console.log('Failed to add new train:', response.status);
+            return;
+        }
+
+        window.location.reload();
+    }
+
     return (
         <AppContainer>
             <Header />
             <ContentComposer>
-                <Sidebar trains={trains.map(t => ({ name: `${t.trainClass} "${t.trainName}"`, id: t.id, onClick: () => setSelectedTrain(t.id) }))} />
+                <Sidebar openModal={() => setNtmOpen(true)} trains={trains.map(t => ({ name: `${t.trainClass} ${t.trainName ? `"${t.trainName}"` : ''}`, id: t.id, onClick: () => setSelectedTrain(t.id) }))} />
                 <ViewPanel id={selectedTrain} />
             </ContentComposer>
+            <TrainModal id={'new-train-modal'} title={'Add new train'} submit={addTrain} closeModal={() => setNtmOpen(false)} ref={ntmRef} />
         </AppContainer>
     );
 }

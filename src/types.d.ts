@@ -1,10 +1,17 @@
+import { DccStatus } from "./enums";
+
 export interface Train {
     id: string;
     trainClass: string;
     trainName: string;
     trainManufacturer: string;
     trainCode: string;
-    trainDccAddress: number;
+    trainDccAddress: string;
+    trainLivery: string;
+    trainDccStatus: DccStatus;
+    trainGauge: string;
+    trainWhyteDesignation: string;
+    trainManufacturerCode: string;
 }
 
 export interface LightTrain {

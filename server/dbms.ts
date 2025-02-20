@@ -1,4 +1,5 @@
 import fs from 'fs/promises';
+import { v4 as uuidv4 } from 'uuid';
 
 interface Database {
     trains: Record[];
@@ -10,7 +11,12 @@ interface Record {
     trainName: string;
     trainManufacturer: string;
     trainCode: string;
-    trainDccAddress: number;
+    trainDccAddress: string;
+    trainLivery: string;
+    trainDccStatus: string;
+    trainGauge: string;
+    trainWhyteDesignation: string;
+    trainManufacturerCode: string;
 }
 
 class TrainDatabase {
@@ -72,6 +78,23 @@ class TrainDatabase {
 
     addNewRecord = async(newRecord: Record) => {
         console.log('[DB]: Adding new record');
+        const newId = uuidv4();
+
+        const newTrain = {
+            ...newRecord,
+            id: newId
+        }
+
+        const newTrains = [...this.db.trains, newTrain];
+
+        try {
+            await fs.writeFile(this.path, JSON.stringify({ trains: newTrains }));
+            this.reloadDb();
+            return true;
+        } catch (e) {
+            console.log('Failed to write new record:', e);
+            return false;
+        }
     }
 }
 

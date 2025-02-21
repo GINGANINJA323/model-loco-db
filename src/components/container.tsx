@@ -4,6 +4,7 @@ import styled from 'styled-components';
 interface ContainerProps {
     width: number;
     children: React.ReactNode
+    id?: string;
 }
 
 interface StyledContainerProps {
@@ -20,10 +21,10 @@ const StyledContainer = styled.div<StyledContainerProps>`
 `;
 
 const Container = (props: ContainerProps) => {
-    const { width, children } = props;
+    const { width, children, id = '' } = props;
 
     return (
-        <StyledContainer width={width}>
+        <StyledContainer id={id} width={width}>
             {children}
         </StyledContainer>
     );

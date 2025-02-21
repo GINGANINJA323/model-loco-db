@@ -29,9 +29,9 @@ const Sidebar = (props: SidebarProps) => {
     const { trains, openModal } = props;
 
     return (
-        <Container width={30}>
+        <Container width={30} id={'sidebar'}>
             {
-                trains.map(t => <SidebarButton key={t.name} onClick={t.onClick}>{t.name}</SidebarButton>)
+                trains.map(t => <SidebarButton key={t.id} id={t.id} onClick={t.onClick}>{t.name}</SidebarButton>)
             }
             <SidebarButton onClick={openModal}>Add new train</SidebarButton>
         </Container>

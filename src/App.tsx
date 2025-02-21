@@ -5,6 +5,7 @@ import { LightTrain, Train } from './types';
 import Sidebar from './components/sidebar';
 import ViewPanel from './components/view-panel';
 import TrainModal from './components/new-train-modal';
+import ContextMenu from './components/context-menu';
 
 const AppContainer = styled.div`
     background-color: #dbdbdb;
@@ -71,14 +72,26 @@ const App = () => {
         window.location.reload();
     }
 
+    const contextOptions = [
+        {
+            label: 'Edit Train',
+            onClick: () => console.log('Edit train clicked')
+        },
+        {
+            label: 'Delete Train',
+            onClick: () => console.log('delete train clicked')
+        }
+    ]
+
     return (
-        <AppContainer>
+        <AppContainer id={'main'}>
             <Header />
             <ContentComposer>
                 <Sidebar openModal={() => setNtmOpen(true)} trains={trains.map(t => ({ name: `${t.trainClass} ${t.trainName ? `"${t.trainName}"` : ''}`, id: t.id, onClick: () => setSelectedTrain(t.id) }))} />
                 <ViewPanel id={selectedTrain} />
             </ContentComposer>
             <TrainModal id={'new-train-modal'} title={'Add new train'} submit={addTrain} closeModal={() => setNtmOpen(false)} ref={ntmRef} />
+            <ContextMenu validTargets={trains.map(t => t.id)} options={contextOptions} target='main' />
         </AppContainer>
     );
 }

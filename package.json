@@ -31,5 +31,8 @@
     "ts-node": "^10.9.2",
     "typescript": "^5.7.3",
     "webpack-dev-middleware": "^7.4.2"
+  },
+  "nodemonConfig": {
+    "ignore": ["./**.json", "**/src/**"]
   }
 }

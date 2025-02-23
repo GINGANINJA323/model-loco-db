@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 interface ContextOption {
     label: string;
-    onClick: () => void;
+    onClick: (trainId: string) => void;
 }
 
 interface ContextMenuProps {
@@ -39,25 +39,25 @@ const ContextMenu = (props: ContextMenuProps) => {
     const [evtTarget, setEvtTarget] = React.useState('');
 
     const handleChangeShow = (e: MouseEvent) => {
-        console.log(validTargets);
         // @ts-ignore - There is an ID, just not in the type
         if (validTargets.includes(e.target?.id)) {
             e.preventDefault();
             if (!show) {
                 setCoords([e.clientX, e.clientY]);
-                console.log(e.target);
                 // @ts-ignore - There is an ID, just not in the type
                 setEvtTarget(e.target?.id);
             }
             setShow(!show);
         } else {
+            console.log('Else!');
             setShow(false);
         }
     };
 
     const handleClick = (e: MouseEvent) => {
+        const validClickTargets = [...validTargets, ...options.map(o => o.label)];
         // @ts-ignore
-        if (!validTargets.includes(e.target?.id)) {
+        if (!validClickTargets.includes(e.target?.id)) {
             setShow(false);
         }
     }
@@ -82,8 +82,8 @@ const ContextMenu = (props: ContextMenuProps) => {
         return null;
     }
 
-    const handleOptionClick = (fn: () => void) => {
-        fn();
+    const handleOptionClick = (trainId: string, fn: (trainId: string) => void) => {
+        fn(trainId);
         setShow(false);
     }
 
@@ -91,7 +91,8 @@ const ContextMenu = (props: ContextMenuProps) => {
         <ContextMenuContainer coords={coords}>
             {
                 options.map(o => (
-                    <ContextItem onClick={() => handleOptionClick(o.onClick)}>{o.label}</ContextItem>
+                    // @ts-ignore
+                    <ContextItem id={o.label} onClick={(e: React.MouseEvent) => handleOptionClick(evtTarget, o.onClick)}>{o.label}</ContextItem>
                 ))
             }
         </ContextMenuContainer>

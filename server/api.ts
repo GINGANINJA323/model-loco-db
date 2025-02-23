@@ -44,6 +44,21 @@ api.post('/new-train', async(req, res) => {
     } else {
         res.status(200).send();
     }
+});
+
+api.post('/edit-train', async(req, res) => {
+    if (!req.body) {
+        res.status(400).send();
+        return;
+    }
+
+    const dbResult = DB.editRecord(req.body.id, req.body);
+
+    if (!dbResult) {
+        res.status(500).send();
+    } else {
+        res.status(200).send();
+    }
 })
 
 export default api;

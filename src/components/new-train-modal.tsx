@@ -9,6 +9,7 @@ interface TrainModalProps {
     submit: (trainData: Train) => void;
     id: string;
     closeModal: () => void;
+    prefillTrain?: string;
 }
 
 type FieldValue<T = Train> = {
@@ -28,7 +29,7 @@ const ButtonRow = styled.div`
 `;
 
 const TrainModal = (props: TrainModalProps) => {
-    const { ref, title, submit, id, closeModal } = props;
+    const { ref, title, submit, id, closeModal, prefillTrain = '' } = props;
 
     const [trainData, setTrainData] = React.useState<Train>({
         id: '',
@@ -57,43 +58,61 @@ const TrainModal = (props: TrainModalProps) => {
         setTrainData(newData);
     }
 
+    const getTrainData = async() => {
+        const response = await fetch(`/api/get-train/${prefillTrain}`);
+
+        if (!response.ok) {
+            console.log('Failed to get train', response.status);
+        } else {
+            const data = await response.json();
+
+            setTrainData(data);
+        }
+    }
+
+    React.useEffect(() => {
+        if (prefillTrain) {
+            getTrainData();
+        }
+    }, [prefillTrain]);
+
     return (
         <dialog ref={ref} id={id}>
             <h1>{title}</h1>
             <DialogContent>
                 <label htmlFor='name'>Train Name:</label>
-                <input id='name' onChange={(e) => onChangeField('trainName', e.target.value)}></input>
+                <input id='name' value={trainData.trainName} onChange={(e) => onChangeField('trainName', e.target.value)}></input>
 
                 <label htmlFor='class'>Train Class:</label>
-                <input id='class' onChange={(e) => onChangeField('trainClass', e.target.value)}></input>
+                <input id='class' value={trainData.trainClass} onChange={(e) => onChangeField('trainClass', e.target.value)}></input>
 
                 <label htmlFor='manufacturer'>Train Manufacturer:</label>
-                <input id='manufacturer' onChange={(e) => onChangeField('trainManufacturer', e.target.value)}></input>
+                <input id='manufacturer' value={trainData.trainManufacturer} onChange={(e) => onChangeField('trainManufacturer', e.target.value)}></input>
 
                 <label htmlFor='code'>Train Code:</label>
-                <input id='code' onChange={(e) => onChangeField('trainCode', e.target.value)}></input>
+                <input id='code' value={trainData.trainCode} onChange={(e) => onChangeField('trainCode', e.target.value)}></input>
 
                 <label htmlFor='dccStatus'>Train DCC Status:</label>
                 <select id='dccStatus' onChange={(e) => onChangeField('trainDccStatus', e.target.value)}>
-                    <option value={DccStatus.Incompatible}>Incompatible</option>
-                    <option value={DccStatus.Ready}>Ready</option>
-                    <option value={DccStatus.Fitted}>Fitted</option>
+                    <option selected={trainData.trainDccStatus === 'Incompatible'} value={DccStatus.Incompatible}>Incompatible</option>
+                    <option selected={trainData.trainDccStatus === 'Ready'} value={DccStatus.Ready}>Ready</option>
+                    <option selected={trainData.trainDccStatus === 'Fitted'} value={DccStatus.Fitted}>Fitted</option>
                 </select>
 
                 <label htmlFor='dccAddress'>Train DCC Address:</label>
-                <input id='dccAddress' disabled={trainData.trainDccStatus !== DccStatus.Fitted} onChange={(e) => onChangeField('trainDccAddress', e.target.value)}></input>
+                <input id='dccAddress' value={trainData.trainDccAddress} disabled={trainData.trainDccStatus !== DccStatus.Fitted} onChange={(e) => onChangeField('trainDccAddress', e.target.value)}></input>
 
                 <label htmlFor='livery'>Train Livery:</label>
-                <input id='livery' onChange={(e) => onChangeField('trainLivery', e.target.value)}></input>
+                <input id='livery' value={trainData.trainLivery} onChange={(e) => onChangeField('trainLivery', e.target.value)}></input>
 
                 <label htmlFor='gauge'>Train Gauge:</label>
-                <input id='gauge' onChange={(e) => onChangeField('trainGauge', e.target.value)}></input>
+                <input id='gauge' value={trainData.trainGauge} onChange={(e) => onChangeField('trainGauge', e.target.value)}></input>
 
                 <label htmlFor='whyte'>Train Whyte:</label>
-                <input id='whyte' onChange={(e) => onChangeField('trainWhyteDesignation', e.target.value)}></input>
+                <input id='whyte' value={trainData.trainWhyteDesignation} onChange={(e) => onChangeField('trainWhyteDesignation', e.target.value)}></input>
 
                 <label htmlFor='manufacturerCode'>Manufacturer Code/SKU:</label>
-                <input id='manufacturerCode' onChange={(e) => onChangeField('trainManufacturerCode', e.target.value)}></input>
+                <input id='manufacturerCode' value={trainData.trainManufacturerCode} onChange={(e) => onChangeField('trainManufacturerCode', e.target.value)}></input>
 
                 <ButtonRow>
                     <button onClick={closeModal}>Close</button>

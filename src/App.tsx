@@ -22,8 +22,11 @@ const App = () => {
     const [trains, setTrains] = React.useState<LightTrain[]>([]);
     const [selectedTrain, setSelectedTrain] = React.useState('');
     const [ntmOpen, setNtmOpen] = React.useState(false);
+    const [etmOpen, setEtmOpen] = React.useState(false);
+    const [editTrain, setEditTrain] = React.useState<string>();
 
     const ntmRef = React.useRef<HTMLDialogElement>(null);
+    const etmRef = React.useRef<HTMLDialogElement>(null);
 
     const getAllTrains = async() => {
         const response = await fetch('/api/all-trains');
@@ -55,6 +58,14 @@ const App = () => {
         }
     }, [ntmOpen]);
 
+    React.useLayoutEffect(() => {
+        if (etmRef.current?.open && !etmOpen) {
+            etmRef.current?.close();
+        } if (!etmRef.current?.open && etmOpen) {
+            etmRef.current?.showModal();
+        }
+    }, [etmOpen]);
+
     const addTrain = async(train: Train) => {
         const response = await fetch('/api/new-train', {
             method: 'POST',
@@ -72,14 +83,34 @@ const App = () => {
         window.location.reload();
     }
 
+    const updateTrain = async(train: Train) => {
+        const response = await fetch('/api/edit-train', {
+            method: 'POST',
+            body: JSON.stringify(train),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (!response.ok) {
+            console.log('Failed to update train:', response.status);
+            return;
+        }
+
+        window.location.reload();
+    }
+
     const contextOptions = [
         {
             label: 'Edit Train',
-            onClick: () => console.log('Edit train clicked')
+            onClick: (trainId: string) => {
+                setEditTrain(trainId);
+                setEtmOpen(true);
+            }
         },
         {
             label: 'Delete Train',
-            onClick: () => console.log('delete train clicked')
+            onClick: (trainId: string) => console.log('delete train clicked', trainId)
         }
     ]
 
@@ -91,6 +122,7 @@ const App = () => {
                 <ViewPanel id={selectedTrain} />
             </ContentComposer>
             <TrainModal id={'new-train-modal'} title={'Add new train'} submit={addTrain} closeModal={() => setNtmOpen(false)} ref={ntmRef} />
+            <TrainModal prefillTrain={editTrain} id={'edit-train-modal'} title={'Edit Train'} submit={updateTrain} closeModal={() => setEtmOpen(false)} ref={etmRef} />
             <ContextMenu validTargets={trains.map(t => t.id)} options={contextOptions} target='main' />
         </AppContainer>
     );

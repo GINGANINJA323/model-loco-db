@@ -68,12 +68,39 @@ class TrainDatabase {
         return this.db.trains.find(t => t.id === id);
     }
 
-    deleteRecord = (id: string) => {
+    deleteRecord = async(id: string) => {
         console.log('[DB]: Deleting record:', id);
+
+        if (!this.db.trains.find(t => t.id === id)) return false;
+
+        const newTrains = this.db.trains.filter(t => t.id !== id);
+
+        try {
+            await fs.writeFile(this.path, JSON.stringify({ trains: newTrains }));
+            this.reloadDb();
+            return true;
+        } catch (e) {
+            console.log('Failed to delete record:', e);
+            return false;
+        }
     }
 
-    editRecord = (id: string, newRecord: Record) => {
+    editRecord = async(id: string, newRecord: Record) => {
         console.log('[DB]: Editing record:', id);
+
+        if (!this.db.trains.find(t => t.id === id)) return false;
+
+        const newTrains = this.db.trains.filter(t => t.id !== id);
+        newTrains.push(newRecord);
+
+        try {
+            await fs.writeFile(this.path, JSON.stringify({ trains: newTrains }));
+            this.reloadDb();
+            return true;
+        } catch (e) {
+            console.log('Failed to edit record:', e);
+            return false;
+        }
     }
 
     addNewRecord = async(newRecord: Record) => {

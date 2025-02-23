@@ -100,6 +100,21 @@ const App = () => {
         window.location.reload();
     }
 
+    const deleteTrain = async(id: string) => {
+        if (!confirm('Are you sure you want to delete this train?')) {
+            return;
+        }
+        
+        const response = await fetch(`/api/delete-train/${id}`);
+
+        if (!response.ok) {
+            console.log('Failed to update train:', response.status);
+            return;
+        }
+
+        window.location.reload();
+    }
+
     const contextOptions = [
         {
             label: 'Edit Train',
@@ -110,7 +125,7 @@ const App = () => {
         },
         {
             label: 'Delete Train',
-            onClick: (trainId: string) => console.log('delete train clicked', trainId)
+            onClick: deleteTrain
         }
     ]
 

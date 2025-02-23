@@ -61,4 +61,19 @@ api.post('/edit-train', async(req, res) => {
     }
 })
 
+api.get('/delete-train/:id', async(req, res) => {
+    if (!req.params.id) {
+        res.status(400).send();
+        return;
+    }
+
+    const dbResult = DB.deleteRecord(req.params.id);
+
+    if (!dbResult) {
+        res.status(500).send();
+    } else {
+        res.status(200).send();
+    }
+})
+
 export default api;

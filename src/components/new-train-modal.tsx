@@ -2,6 +2,9 @@ import * as React from 'react';
 import styled from 'styled-components';
 import { Train } from '../types';
 import { DccStatus } from '../enums';
+import DatePicker from 'react-datepicker';
+
+import "react-datepicker/dist/react-datepicker.css";
 
 interface TrainModalProps {
     title: string;
@@ -43,6 +46,8 @@ const TrainModal = (props: TrainModalProps) => {
         trainGauge: '',
         trainWhyteDesignation: '',
         trainManufacturerCode: '',
+        trainLastServiced: '',
+        trainRunningTime: ''
     });
 
     const onChangeField = (field: keyof Train, value: FieldValue) => {
@@ -113,6 +118,12 @@ const TrainModal = (props: TrainModalProps) => {
 
                 <label htmlFor='manufacturerCode'>Manufacturer Code/SKU:</label>
                 <input id='manufacturerCode' value={trainData.trainManufacturerCode} onChange={(e) => onChangeField('trainManufacturerCode', e.target.value)}></input>
+
+                <label htmlFor='lastServiceDate'>Last Service Date:</label>
+                <DatePicker selected={trainData.trainLastServiced ? new Date(trainData.trainLastServiced) : new Date()} onChange={(date) => onChangeField('trainLastServiced', date?.toISOString() || '')} />
+
+                <label htmlFor='runningTime'>Running time:</label>
+                <input id={'runningTime'} value={trainData.trainRunningTime} onChange={(e) => onChangeField('trainRunningTime', e.target.value)} type='time'></input>
 
                 <ButtonRow>
                     <button onClick={closeModal}>Close</button>

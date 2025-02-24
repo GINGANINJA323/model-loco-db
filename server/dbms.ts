@@ -17,6 +17,8 @@ interface Record {
     trainGauge: string;
     trainWhyteDesignation: string;
     trainManufacturerCode: string;
+    trainLastServiced: string;
+    trainRunningTime: string;
 }
 
 class TrainDatabase {

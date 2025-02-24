@@ -57,6 +57,11 @@ const ViewPanel = (props: ViewPanelProps) => {
         trainManufacturerCode: 'Product Code'
     }
 
+    const serviceKeyLabelMap: { [key: string]: string } = {
+        trainRunningTime: 'Train Running Time',
+        trainLastServiced: 'Last Service Date'
+    }
+
     return (
         <Container width={70}>
             {
@@ -84,6 +89,21 @@ const ViewPanel = (props: ViewPanelProps) => {
                                             null : 
                                             <TableRow>
                                                 <p>{modelKeyLabelMap[k]}</p>
+                                                {/* @ts-ignore - need to hard type this */}
+                                                <p>{trainData[k]}</p>
+                                            </TableRow>
+                                    )
+                                }
+                            </Table>
+                        </Collapsible>
+                        <Collapsible label='Service Information'>
+                            <Table>
+                                {
+                                    Object.keys(serviceKeyLabelMap).map((k) =>
+                                        k === 'trainDccAddress' && trainData['trainDccStatus'] !== DccStatus.Fitted ? 
+                                            null : 
+                                            <TableRow>
+                                                <p>{serviceKeyLabelMap[k]}</p>
                                                 {/* @ts-ignore - need to hard type this */}
                                                 <p>{trainData[k]}</p>
                                             </TableRow>

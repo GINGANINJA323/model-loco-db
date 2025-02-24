@@ -12,6 +12,8 @@ export interface Train {
     trainGauge: string;
     trainWhyteDesignation: string;
     trainManufacturerCode: string;
+    trainLastServiced: string;
+    trainRunningTime: string;
 }
 
 export interface LightTrain {

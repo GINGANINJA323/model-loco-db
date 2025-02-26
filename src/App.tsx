@@ -66,7 +66,7 @@ const App = () => {
         }
     }, [etmOpen]);
 
-    const addTrain = async(train: Train) => {
+    const addTrain = async(train: Train, image?: File) => {
         const response = await fetch('/api/new-train', {
             method: 'POST',
             body: JSON.stringify(train),
@@ -80,10 +80,19 @@ const App = () => {
             return;
         }
 
-        window.location.reload();
+        const newId = await response.text();
+
+        if (image) {
+            await uploadTrainImage(newId, image);
+        } else {
+            window.location.reload();
+        }
+
+
     }
 
-    const updateTrain = async(train: Train) => {
+    const updateTrain = async(train: Train, image?: File) => {
+        console.log('Image:', image);
         const response = await fetch('/api/edit-train', {
             method: 'POST',
             body: JSON.stringify(train),
@@ -97,7 +106,12 @@ const App = () => {
             return;
         }
 
-        window.location.reload();
+        if (image) {
+            await uploadTrainImage(train.id, image);
+        } else {
+            window.location.reload();
+        }
+
     }
 
     const deleteTrain = async(id: string) => {
@@ -108,8 +122,24 @@ const App = () => {
         const response = await fetch(`/api/delete-train/${id}`);
 
         if (!response.ok) {
-            console.log('Failed to update train:', response.status);
+            console.log('Failed to delete train:', response.status);
             return;
+        }
+
+        window.location.reload();
+    }
+
+    const uploadTrainImage = async(id: string, file: File) => {
+        const form = new FormData();
+        form.append('image', file);
+        const response = await fetch(`/api/upload-image/${id}`, {
+            method: 'POST',
+            // @ts-ignore
+            body: form
+        });
+
+        if (!response.ok) {
+            console.log('Failed to upload image:', response.status);
         }
 
         window.location.reload();

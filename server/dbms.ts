@@ -19,6 +19,7 @@ interface Record {
     trainManufacturerCode: string;
     trainLastServiced: string;
     trainRunningTime: string;
+    trainImage: string;
 }
 
 class TrainDatabase {
@@ -105,6 +106,26 @@ class TrainDatabase {
         }
     }
 
+    addImageForTrain = async(id: string, filename: string) => {
+        console.log('[DB]: attaching image to record:', id);
+
+        if (!this.db.trains.find(t => t.id === id)) return false;
+
+        const newRecord = { ...this.db.trains.find(t => t.id === id), trainImage: filename }
+        const newTrains = this.db.trains.filter(t => t.id !== id);
+        // @ts-ignore - we've checked the train exists before hand, so the Record types won't be optional as TS has inferred.
+        newTrains.push(newRecord);
+
+        try {
+            await fs.writeFile(this.path, JSON.stringify({ trains: newTrains }));
+            this.reloadDb();
+            return true;
+        } catch (e) {
+            console.log('Failed to edit record:', e);
+            return false;
+        }
+    }
+
     addNewRecord = async(newRecord: Record) => {
         console.log('[DB]: Adding new record');
         const newId = uuidv4();
@@ -119,7 +140,7 @@ class TrainDatabase {
         try {
             await fs.writeFile(this.path, JSON.stringify({ trains: newTrains }));
             this.reloadDb();
-            return true;
+            return newId;
         } catch (e) {
             console.log('Failed to write new record:', e);
             return false;

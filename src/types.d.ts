@@ -14,6 +14,7 @@ export interface Train {
     trainManufacturerCode: string;
     trainLastServiced: string;
     trainRunningTime: string;
+    trainImage?: string;
 }
 
 export interface LightTrain {

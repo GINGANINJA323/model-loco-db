@@ -4,6 +4,7 @@ import Container from './container';
 import { Train } from '../types';
 import { DccStatus } from '../enums';
 import Collapsible from './collapsible';
+import TrainImage from './train-image';
 
 interface ViewPanelProps {
     id: string;
@@ -68,6 +69,9 @@ const ViewPanel = (props: ViewPanelProps) => {
                 trainData ? 
                     <>
                         <h2>{`${trainData.trainManufacturer} ${trainData.trainClass} ${trainData.trainWhyteDesignation} ${trainData.trainName ? `"${trainData.trainName}"` : ''}`}</h2>
+                        {
+                            trainData.trainImage ? <TrainImage id={trainData.id} /> : null
+                        }
                         <Collapsible label={'Locomotive Information'} defaultOpen>
                             <Table>
                                 {

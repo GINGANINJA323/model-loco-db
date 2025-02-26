@@ -9,7 +9,7 @@ import "react-datepicker/dist/react-datepicker.css";
 interface TrainModalProps {
     title: string;
     ref: React.Ref<HTMLDialogElement>;
-    submit: (trainData: Train) => void;
+    submit: (trainData: Train, image?: File) => void;
     id: string;
     closeModal: () => void;
     prefillTrain?: string;
@@ -49,6 +49,8 @@ const TrainModal = (props: TrainModalProps) => {
         trainLastServiced: '',
         trainRunningTime: ''
     });
+
+    const [image, setImage] = React.useState<File | undefined>();
 
     const onChangeField = (field: keyof Train, value: FieldValue) => {
         if (!Object.keys(trainData).includes(field)) {
@@ -125,9 +127,12 @@ const TrainModal = (props: TrainModalProps) => {
                 <label htmlFor='runningTime'>Running time:</label>
                 <input id={'runningTime'} value={trainData.trainRunningTime} onChange={(e) => onChangeField('trainRunningTime', e.target.value)} type='time'></input>
 
+                <label htmlFor='uploadImage'>Upload Image:</label>
+                <input type='file' id='uploadImage' onChange={(e) => setImage(e.target.files?.[0])}></input>
+
                 <ButtonRow>
                     <button onClick={closeModal}>Close</button>
-                    <button onClick={() => submit(trainData)}>Submit</button>
+                    <button onClick={() => submit(trainData, image)}>Submit</button>
                 </ButtonRow>
             </DialogContent>
         </dialog>

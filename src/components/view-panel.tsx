@@ -5,6 +5,7 @@ import { Train } from '../types';
 import { DccStatus } from '../enums';
 import Collapsible from './collapsible';
 import TrainImage from './train-image';
+import { Heading2, Text } from './common';
 
 interface ViewPanelProps {
     id: string;
@@ -68,7 +69,7 @@ const ViewPanel = (props: ViewPanelProps) => {
             {
                 trainData ? 
                     <>
-                        <h2>{`${trainData.trainManufacturer} ${trainData.trainClass} ${trainData.trainWhyteDesignation} ${trainData.trainName ? `"${trainData.trainName}"` : ''}`}</h2>
+                        <Heading2>{`${trainData.trainManufacturer} ${trainData.trainClass} ${trainData.trainWhyteDesignation} ${trainData.trainName ? `"${trainData.trainName}"` : ''}`}</Heading2>
                         {
                             trainData.trainImage ? <TrainImage id={trainData.id} /> : null
                         }
@@ -77,9 +78,9 @@ const ViewPanel = (props: ViewPanelProps) => {
                                 {
                                     Object.keys(trainKeyLabelMap).map((k) =>
                                         <TableRow>
-                                            <p>{trainKeyLabelMap[k]}</p>
+                                            <Text>{trainKeyLabelMap[k]}</Text>
                                             {/* @ts-ignore - need to hard type this */}
-                                            <p>{trainData[k]}</p>
+                                            <Text>{trainData[k]}</Text>
                                         </TableRow>
                                     )
                                 }
@@ -92,9 +93,9 @@ const ViewPanel = (props: ViewPanelProps) => {
                                         k === 'trainDccAddress' && trainData['trainDccStatus'] !== DccStatus.Fitted ? 
                                             null : 
                                             <TableRow>
-                                                <p>{modelKeyLabelMap[k]}</p>
+                                                <Text>{modelKeyLabelMap[k]}</Text>
                                                 {/* @ts-ignore - need to hard type this */}
-                                                <p>{trainData[k]}</p>
+                                                <Text>{trainData[k]}</Text>
                                             </TableRow>
                                     )
                                 }
@@ -107,16 +108,16 @@ const ViewPanel = (props: ViewPanelProps) => {
                                         k === 'trainDccAddress' && trainData['trainDccStatus'] !== DccStatus.Fitted ? 
                                             null : 
                                             <TableRow>
-                                                <p>{serviceKeyLabelMap[k]}</p>
+                                                <Text>{serviceKeyLabelMap[k]}</Text>
                                                 {/* @ts-ignore - need to hard type this */}
-                                                <p>{trainData[k]}</p>
+                                                <Text>{trainData[k]}</Text>
                                             </TableRow>
                                     )
                                 }
                             </Table>
                         </Collapsible>
                     </> :
-                    <p>Select a train to continue...</p>
+                    <Text>Select a train to continue...</Text>
             }
         </Container>
     );

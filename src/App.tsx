@@ -8,7 +8,7 @@ import TrainModal from './components/new-train-modal';
 import ContextMenu from './components/context-menu';
 
 const AppContainer = styled.div`
-    background-color: #dbdbdb;
+    background-color: #3C4876;
     height: 100vh;
 `;
 

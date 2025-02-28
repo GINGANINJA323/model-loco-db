@@ -1,5 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
+import { Heading1 } from './common';
 
 interface HeaderProps {
     title?: string;
@@ -10,7 +11,7 @@ const HeaderContainer = styled.div`
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    background-color: #FFF;
+    background-color: #FFFFFF;
     height: 80px;
 `;
 
@@ -19,7 +20,7 @@ const Header = (props: HeaderProps) => {
     
     return (
         <HeaderContainer>
-            <h1>{title}</h1>
+            <Heading1>{title}</Heading1>
         </HeaderContainer>
     );
 }

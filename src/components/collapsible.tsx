@@ -1,5 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
+import { Heading3 } from './common';
 
 interface CollapsibleProps {
     label: string;
@@ -23,7 +24,7 @@ const Collapsible = (props: CollapsibleProps) => {
     return (
         <>
             <CollapsibleHeader onClick={() => setOpen(!open)}>
-                <h3>{label}</h3>
+                <Heading3>{label}</Heading3>
             </CollapsibleHeader>
             {
                 open ? children : null

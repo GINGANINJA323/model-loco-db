@@ -18,6 +18,7 @@ const SidebarButton = styled.button`
     width: 100%;
     padding: 5px 0px;
     background-color: #FFFFFF;
+    font-size: 18px;
 
     &:hover {
         cursor: pointer;
@@ -29,11 +30,15 @@ const Sidebar = (props: SidebarProps) => {
     const { trains, openModal } = props;
 
     return (
-        <Container width={30} id={'sidebar'}>
+        <Container width={30} id={'sidebar'} additionalStyles={'display: flex; flex-direction: column; justify-content: space-between;'}>
+            <div>
             {
                 trains.map(t => <SidebarButton key={t.id} id={t.id} onClick={t.onClick}>{t.name}</SidebarButton>)
             }
-            <SidebarButton onClick={openModal}>Add new train</SidebarButton>
+            </div>
+            <div>
+                <SidebarButton onClick={openModal}><strong>Add new train</strong></SidebarButton>
+            </div>
         </Container>
     );
 }

@@ -75,12 +75,16 @@ class TrainDatabase {
         console.log('[DB]: Deleting record:', id);
 
         if (!this.db.trains.find(t => t.id === id)) return false;
+        const imageId = this.db.trains.find(t => t.id === id)?.trainImage;
 
         const newTrains = this.db.trains.filter(t => t.id !== id);
 
         try {
             await fs.writeFile(this.path, JSON.stringify({ trains: newTrains }));
             this.reloadDb();
+            if (imageId) {
+                await fs.rm(__dirname + '/images/' + imageId);
+            }
             return true;
         } catch (e) {
             console.log('Failed to delete record:', e);

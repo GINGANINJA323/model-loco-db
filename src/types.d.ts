@@ -22,3 +22,14 @@ export interface LightTrain {
     trainClass: string;
     trainName: string;
 }
+
+export interface SidebarOption {
+    id: string;
+    name: string;
+    onClick: () => void;
+}
+
+export interface ContextOption {
+    label: string;
+    onClick: (trainId: string) => void;
+}

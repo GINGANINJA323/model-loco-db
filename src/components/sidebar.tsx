@@ -1,15 +1,10 @@
 import * as React from 'react';
 import Container from './container';
 import styled from 'styled-components';
-
-interface Train {
-    id: string;
-    name: string;
-    onClick: () => void;
-}
+import { SidebarOption } from '../types';
 
 interface SidebarProps {
-    trains: Train[]
+    trains: SidebarOption[]
     openModal: () => void;
 }
 

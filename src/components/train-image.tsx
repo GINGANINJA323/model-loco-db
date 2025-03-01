@@ -30,7 +30,7 @@ const TrainImage = (props: TrainImageProps) => {
     });
 
     return (
-        <img src={image} />
+        <img width={'100%'} src={image} />
     );
 }
 

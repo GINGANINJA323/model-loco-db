@@ -1,10 +1,6 @@
 import * as React from 'react'
 import styled from 'styled-components'
-
-interface ContextOption {
-    label: string;
-    onClick: (trainId: string) => void;
-}
+import { ContextOption } from '../types';
 
 interface ContextMenuProps {
     options: ContextOption[];

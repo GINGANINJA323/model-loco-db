@@ -65,7 +65,7 @@ const ViewPanel = (props: ViewPanelProps) => {
     }
 
     return (
-        <Container width={70}>
+        <Container width={window.innerWidth < 800 ? 100 : 70}>
             {
                 trainData ? 
                     <>

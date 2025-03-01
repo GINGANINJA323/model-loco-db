@@ -1,5 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
+import { devices } from '../constants';
 
 interface ContainerProps {
     width: number;
@@ -16,11 +17,14 @@ interface StyledContainerProps {
 const StyledContainer = styled.div<StyledContainerProps>`
     background-color: #FFFFFF;
     width: ${props => props.width}%;
-    padding: 5px 20px;
-    margin: 10px 10px;
     border-radius: 10px;
     overflow: scroll;
     ${props => props.additionalStyles ? props.additionalStyles : ''};
+
+    @media screen and ${devices.desktop} {
+        padding: 5px 20px;
+        margin: 10px 10px;
+    }
 `;
 
 const Container = (props: ContainerProps) => {

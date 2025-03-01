@@ -6,6 +6,8 @@ import Sidebar from './components/sidebar';
 import ViewPanel from './components/view-panel';
 import TrainModal from './components/new-train-modal';
 import ContextMenu from './components/context-menu';
+import { devices } from './constants';
+import TrainDropdown from './components/train-dropdown';
 
 const AppContainer = styled.div`
     background-color: #3C4876;
@@ -14,9 +16,16 @@ const AppContainer = styled.div`
 
 const ContentComposer = styled.div`
     display: flex;
-    flex-direction: row;
     height: calc(100% - 100px);
-`
+
+    @media screen and ${devices.mobile} {
+        flex-direction: column;
+    }
+
+    @media screen and ${devices.desktop} {
+        flex-direction: row;
+    }
+`;
 
 const App = () => {
     const [trains, setTrains] = React.useState<LightTrain[]>([]);
@@ -163,7 +172,13 @@ const App = () => {
         <AppContainer id={'main'}>
             <Header />
             <ContentComposer>
-                <Sidebar openModal={() => setNtmOpen(true)} trains={trains.map(t => ({ name: `${t.trainClass} ${t.trainName ? `"${t.trainName}"` : ''}`, id: t.id, onClick: () => setSelectedTrain(t.id) }))} />
+                {
+                    window.innerWidth < 801 ? <TrainDropdown trains={trains.map(t => ({ name: `${t.trainClass} ${t.trainName ? `"${t.trainName}"` : ''}`, id: t.id, onClick: () => setSelectedTrain(t.id) }))} contextOptions={contextOptions} /> :
+                    <Sidebar
+                        openModal={() => setNtmOpen(true)}
+                        trains={trains.map(t => ({ name: `${t.trainClass} ${t.trainName ? `"${t.trainName}"` : ''}`, id: t.id, onClick: () => setSelectedTrain(t.id) }))}
+                    />
+                }
                 <ViewPanel id={selectedTrain} />
             </ContentComposer>
             <TrainModal id={'new-train-modal'} title={'Add new train'} submit={addTrain} closeModal={() => setNtmOpen(false)} ref={ntmRef} />

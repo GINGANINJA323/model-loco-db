@@ -87,16 +87,16 @@ const TrainModal = (props: TrainModalProps) => {
         <dialog ref={ref} id={id}>
             <h1>{title}</h1>
             <DialogContent>
-                <label htmlFor='name'>Train Name:</label>
+                <label title='Name of the train, as shown on the name plate' htmlFor='name'>Train Name:</label>
                 <input id='name' value={trainData.trainName} onChange={(e) => onChangeField('trainName', e.target.value)}></input>
 
-                <label htmlFor='class'>Train Class:</label>
+                <label title='Class number or name' htmlFor='class'>Train Class:</label>
                 <input id='class' value={trainData.trainClass} onChange={(e) => onChangeField('trainClass', e.target.value)}></input>
 
-                <label htmlFor='manufacturer'>Train Manufacturer:</label>
+                <label title='Model manufacturer' htmlFor='manufacturer'>Train Manufacturer:</label>
                 <input id='manufacturer' value={trainData.trainManufacturer} onChange={(e) => onChangeField('trainManufacturer', e.target.value)}></input>
 
-                <label htmlFor='code'>Train Code:</label>
+                <label title='Train identification code' htmlFor='code'>Train Code:</label>
                 <input id='code' value={trainData.trainCode} onChange={(e) => onChangeField('trainCode', e.target.value)}></input>
 
                 <label htmlFor='dccStatus'>Train DCC Status:</label>
@@ -106,19 +106,19 @@ const TrainModal = (props: TrainModalProps) => {
                     <option selected={trainData.trainDccStatus === 'Fitted'} value={DccStatus.Fitted}>Fitted</option>
                 </select>
 
-                <label htmlFor='dccAddress'>Train DCC Address:</label>
+                <label title='Address of the DCC decoder chip fitted if applicable' htmlFor='dccAddress'>Train DCC Address:</label>
                 <input id='dccAddress' value={trainData.trainDccAddress} disabled={trainData.trainDccStatus !== DccStatus.Fitted} onChange={(e) => onChangeField('trainDccAddress', e.target.value)}></input>
 
-                <label htmlFor='livery'>Train Livery:</label>
+                <label title='Train livery/colour scheme' htmlFor='livery'>Train Livery:</label>
                 <input id='livery' value={trainData.trainLivery} onChange={(e) => onChangeField('trainLivery', e.target.value)}></input>
 
-                <label htmlFor='gauge'>Train Gauge:</label>
+                <label title='Model gauge i.e. N, O, OO' htmlFor='gauge'>Train Gauge:</label>
                 <input id='gauge' value={trainData.trainGauge} onChange={(e) => onChangeField('trainGauge', e.target.value)}></input>
 
-                <label htmlFor='whyte'>Train Whyte:</label>
+                <label title='Train wheel arrangement i.e. 4-6-2, 0-6-0' htmlFor='whyte'>Train Whyte:</label>
                 <input id='whyte' value={trainData.trainWhyteDesignation} onChange={(e) => onChangeField('trainWhyteDesignation', e.target.value)}></input>
 
-                <label htmlFor='manufacturerCode'>Manufacturer Code/SKU:</label>
+                <label title='Model mnaufacturers ID code' htmlFor='manufacturerCode'>Manufacturer Code/SKU:</label>
                 <input id='manufacturerCode' value={trainData.trainManufacturerCode} onChange={(e) => onChangeField('trainManufacturerCode', e.target.value)}></input>
 
                 <label htmlFor='lastServiceDate'>Last Service Date:</label>

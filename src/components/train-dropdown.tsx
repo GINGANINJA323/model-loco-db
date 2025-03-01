@@ -28,18 +28,23 @@ const TrainDropdown = (props: TrainDropdownProps) => {
     const { trains, contextOptions } = props;
     const [selected, setSelected] = React.useState('');
 
-    const handleSelectTrain = (t: SidebarOption, e: React.MouseEvent) => {
-        // @ts-ignore
-        setSelected(e.target.value);
+    const handleSelectTrain = (t: SidebarOption) => {
+        setSelected(t.id);
         t.onClick();
     }
+
+    React.useEffect(() => {
+        if (trains && !selected) {
+            setSelected(trains[0]?.id);
+        }
+    }, [trains])
 
     return (
         <DropdownContainer>
             <Dropdown>
                 {
                     trains.map(t => (
-                        <option key={t.id} onClick={(e) => handleSelectTrain(t, e)}>{t.name}</option>
+                        <option key={t.id} onClick={() => handleSelectTrain(t)}>{t.name}</option>
                     ))
                 }
             </Dropdown>

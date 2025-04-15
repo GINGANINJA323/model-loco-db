@@ -1,5 +1,4 @@
 import * as React from 'react';
-import styled from 'styled-components';
 
 interface TrainImageProps {
     id: string;
@@ -30,7 +29,7 @@ const TrainImage = (props: TrainImageProps) => {
     });
 
     return (
-        <img width={'100%'} src={image} />
+        <img width={'60%'} src={image} />
     );
 }
 

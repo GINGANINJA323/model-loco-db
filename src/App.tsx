@@ -8,9 +8,11 @@ import TrainModal from './components/new-train-modal';
 import ContextMenu from './components/context-menu';
 import { devices } from './constants';
 import TrainDropdown from './components/train-dropdown';
+import ThemeContext from './context/ThemeContext';
+import { themesBackground } from './constants';
 
-const AppContainer = styled.div`
-    background-color: #3C4876;
+const AppContainer = styled.div<{ colour: string }>`
+    background-color: ${(props) => props.colour};
     height: 100vh;
 `;
 
@@ -33,6 +35,8 @@ const App = () => {
     const [ntmOpen, setNtmOpen] = React.useState(false);
     const [etmOpen, setEtmOpen] = React.useState(false);
     const [editTrain, setEditTrain] = React.useState<string>();
+    const [themePrimary, setThemePrimary] = React.useState('light');
+    const [themeBackground, setThemeBackground] = React.useState('brIntercityBlue');
 
     const ntmRef = React.useRef<HTMLDialogElement>(null);
     const etmRef = React.useRef<HTMLDialogElement>(null);
@@ -168,22 +172,31 @@ const App = () => {
         }
     ]
 
+    const themeContextValue = {
+        selectedPrimary: themePrimary,
+        selectedBackground: themeBackground,
+        setSelectedPrimary: setThemePrimary,
+        setSelectedBackground: setThemeBackground
+    }
+
     return (
-        <AppContainer id={'main'}>
-            <Header />
-            <ContentComposer>
-                {
-                    window.innerWidth < 801 ? <TrainDropdown trains={trains.map(t => ({ name: `${t.trainClass} ${t.trainName ? `"${t.trainName}"` : ''}`, id: t.id, onClick: () => setSelectedTrain(t.id) }))} contextOptions={contextOptions} /> :
-                    <Sidebar
-                        openModal={() => setNtmOpen(true)}
-                        trains={trains.map(t => ({ name: `${t.trainClass} ${t.trainName ? `"${t.trainName}"` : ''}`, id: t.id, onClick: () => setSelectedTrain(t.id) }))}
-                    />
-                }
-                <ViewPanel id={selectedTrain} />
-            </ContentComposer>
-            <TrainModal id={'new-train-modal'} title={'Add new train'} submit={addTrain} closeModal={() => setNtmOpen(false)} ref={ntmRef} />
-            <TrainModal prefillTrain={editTrain} id={'edit-train-modal'} title={'Edit Train'} submit={updateTrain} closeModal={() => setEtmOpen(false)} ref={etmRef} />
-            <ContextMenu validTargets={trains.map(t => t.id)} options={contextOptions} target='main' />
+        <AppContainer id={'main'} colour={themesBackground[themeBackground].code}>
+            <ThemeContext.Provider value={themeContextValue}>
+                <Header />
+                <ContentComposer>
+                    {
+                        window.innerWidth < 801 ? <TrainDropdown trains={trains.map(t => ({ name: `${t.trainClass} ${t.trainName ? `"${t.trainName}"` : ''}`, id: t.id, onClick: () => setSelectedTrain(t.id) }))} contextOptions={contextOptions} /> :
+                        <Sidebar
+                            openModal={() => setNtmOpen(true)}
+                            trains={trains.map(t => ({ name: `${t.trainClass} ${t.trainName ? `"${t.trainName}"` : ''}`, id: t.id, onClick: () => setSelectedTrain(t.id) }))}
+                        />
+                    }
+                    <ViewPanel id={selectedTrain} />
+                </ContentComposer>
+                <TrainModal id={'new-train-modal'} title={'Add new train'} submit={addTrain} closeModal={() => setNtmOpen(false)} ref={ntmRef} />
+                <TrainModal prefillTrain={editTrain} id={'edit-train-modal'} title={'Edit Train'} submit={updateTrain} closeModal={() => setEtmOpen(false)} ref={etmRef} />
+                <ContextMenu validTargets={trains.map(t => t.id)} options={contextOptions} target='main' />
+            </ThemeContext.Provider>
         </AppContainer>
     );
 }

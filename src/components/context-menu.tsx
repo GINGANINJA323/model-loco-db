@@ -1,6 +1,8 @@
 import * as React from 'react'
 import styled from 'styled-components'
-import { ContextOption } from '../types';
+import { ContextOption, WithThemeProps } from '../types';
+import { themesPrimary } from '../constants';
+import ThemeContext from '../context/ThemeContext';
 
 interface ContextMenuProps {
     options: ContextOption[];
@@ -8,23 +10,27 @@ interface ContextMenuProps {
     validTargets: string[];
 }
 
-const ContextMenuContainer = styled.div<{ coords: number[] }>`
+const ContextMenuContainer = styled.div<{ coords: number[], bgColour: string, textColour: string }>`
     display: flex;
     flex-direction: column;
     position: absolute;
     left: ${props => props.coords[0]}px;
     top: ${props => props.coords[1]}px;
     width: 100px;
-    background-color: #FFFFFF;
-    border: 1px solid #000000;
+    background-color: ${props => props.bgColour};
+    border: 1px solid ${props => props.textColour};
+    color: ${props => props.textColour};
 `;
 
-const ContextItem = styled.button`
+const ContextItem = styled.button<WithThemeProps>`
     border: none;
     padding: 5px;
+    background-color: ${props => props.bgColour};
+    color: ${props => props.textColour};
 
     &:hover {
         cursor: pointer;
+        background-color: ${props => props.hoverColour}
     }
 `;
 
@@ -33,6 +39,8 @@ const ContextMenu = (props: ContextMenuProps) => {
     const [show, setShow] = React.useState(false);
     const [coords, setCoords] = React.useState<number[]>([]);
     const [evtTarget, setEvtTarget] = React.useState('');
+    const { selectedPrimary } = React.useContext(ThemeContext);
+    const { fore, text, hover } = themesPrimary[selectedPrimary];
 
     const handleChangeShow = (e: MouseEvent) => {
         // @ts-ignore - There is an ID, just not in the type
@@ -84,11 +92,17 @@ const ContextMenu = (props: ContextMenuProps) => {
     }
 
     return (
-        <ContextMenuContainer coords={coords}>
+        <ContextMenuContainer bgColour={fore} textColour={text} coords={coords}>
             {
                 options.map(o => (
                     // @ts-ignore
-                    <ContextItem id={o.label} onClick={(e: React.MouseEvent) => handleOptionClick(evtTarget, o.onClick)}>{o.label}</ContextItem>
+                    <ContextItem
+                        id={o.label}
+                        bgColour={fore}
+                        textColour={text}
+                        hoverColour={hover}
+                        onClick={(e: React.MouseEvent) => handleOptionClick(evtTarget, o.onClick)}
+                    >{o.label}</ContextItem>
                 ))
             }
         </ContextMenuContainer>

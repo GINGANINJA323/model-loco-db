@@ -1,10 +1,12 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { Train } from '../types';
+import { Train, WithThemeProps } from '../types';
 import { DccStatus } from '../enums';
 import DatePicker from 'react-datepicker';
 
 import "react-datepicker/dist/react-datepicker.css";
+import ThemeContext from '../context/ThemeContext';
+import { themesPrimary } from '../constants';
 
 interface TrainModalProps {
     title: string;
@@ -19,9 +21,11 @@ type FieldValue<T = Train> = {
     [K in keyof T]-?: T[K]
 }[keyof T];
 
-const DialogContent = styled.div`
+const DialogContent = styled.div<WithThemeProps>`
     display: flex;
     flex-direction: column;
+    background-color: ${props => props.bgColour};
+    color: ${props => props.textColour};
 `;
 
 const ButtonRow = styled.div`
@@ -51,6 +55,9 @@ const TrainModal = (props: TrainModalProps) => {
     });
 
     const [image, setImage] = React.useState<File | undefined>();
+
+    const { selectedPrimary } = React.useContext(ThemeContext);
+    const { fore, text } = themesPrimary[selectedPrimary];
 
     const onChangeField = (field: keyof Train, value: FieldValue) => {
         if (!Object.keys(trainData).includes(field)) {
@@ -84,9 +91,9 @@ const TrainModal = (props: TrainModalProps) => {
     }, [prefillTrain]);
 
     return (
-        <dialog ref={ref} id={id}>
+        <dialog style={{ background: fore, color: text }} ref={ref} id={id}>
             <h1>{title}</h1>
-            <DialogContent>
+            <DialogContent bgColour={fore} textColour={text}>
                 <label title='Name of the train, as shown on the name plate' htmlFor='name'>Train Name:</label>
                 <input id='name' value={trainData.trainName} onChange={(e) => onChangeField('trainName', e.target.value)}></input>
 

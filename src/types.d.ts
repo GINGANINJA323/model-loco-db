@@ -33,3 +33,16 @@ export interface ContextOption {
     label: string;
     onClick: (trainId: string) => void;
 }
+
+export interface ThemeContextType {
+    selectedPrimary: string;
+    selectedBackground: string;
+    setSelectedPrimary: (theme: string) => void;
+    setSelectedBackground: (theme: string) => void;
+}
+
+export interface WithThemeProps {
+    bgColour: string;
+    textColour: string;
+    hoverColour?: string;
+}

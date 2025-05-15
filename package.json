@@ -1,6 +1,6 @@
 {
   "name": "model-loco-db",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "main": "index.js",
   "scripts": {
     "start": "DEV=true nodemon server/index.ts",

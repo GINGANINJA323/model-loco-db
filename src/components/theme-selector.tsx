@@ -59,12 +59,38 @@ const ThemeSelector = () => {
     } = React.useContext(ThemeContext);
     const { fore, text, hover } = themesPrimary[selectedPrimary];
 
+    const handleOutsideClick = (e: MouseEvent) => {
+        console.log('Handler called');
+        const el = document.getElementById('theme-popover');
+        if (!el) throw new Error('No popover found...');
+
+        // @ts-ignore - ID is present but not in the type
+        if (e.target && !el.contains(e.target) && e.target?.id !== 'theme-selector-button') setIsThemeOpen(false);
+    }
+
+    const handleKeyPress = (e: KeyboardEvent) => {
+        console.log(e.key);
+        if (e.key === 'Escape') setIsThemeOpen(false);
+    }
+
+    React.useLayoutEffect(() => {
+        if (isThemeOpen) {
+            document.addEventListener('click', handleOutsideClick);
+            document.addEventListener('keydown', handleKeyPress);
+
+            return () => {
+                document.removeEventListener('click', handleOutsideClick);
+                document.removeEventListener('keydown', handleKeyPress);
+            }
+        }
+    }, [isThemeOpen])
+
     return (
         <ThemeContainer>
-            <ThemeButton hoverColour={hover} bgColour={fore} textColour={text} onClick={() => setIsThemeOpen(!isThemeOpen)}>Theme</ThemeButton>
+            <ThemeButton id='theme-selector-button' hoverColour={hover} bgColour={fore} textColour={text} onClick={() => setIsThemeOpen(!isThemeOpen)}>Theme</ThemeButton>
             {
                 isThemeOpen ? 
-                <PopoverMenu bgColour={fore} textColour={text}>
+                <PopoverMenu id='theme-popover' bgColour={fore} textColour={text}>
                     <p>Primary Theme:</p>
                     <ThemeColourGrid>
                         {

@@ -53,7 +53,6 @@ const ContextMenu = (props: ContextMenuProps) => {
             }
             setShow(!show);
         } else {
-            console.log('Else!');
             setShow(false);
         }
     };

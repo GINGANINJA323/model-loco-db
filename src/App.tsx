@@ -9,7 +9,7 @@ import ContextMenu from './components/context-menu';
 import { devices } from './constants';
 import TrainDropdown from './components/train-dropdown';
 import ThemeContext from './context/ThemeContext';
-import { themesBackground } from './constants';
+import { themesBackground, themesPrimary } from './constants';
 
 const AppContainer = styled.div<{ colour: string }>`
     background-color: ${(props) => props.colour};
@@ -40,6 +40,14 @@ const App = () => {
 
     const ntmRef = React.useRef<HTMLDialogElement>(null);
     const etmRef = React.useRef<HTMLDialogElement>(null);
+
+    React.useEffect(() => {
+        const prim = localStorage.getItem('theme-primary');
+        const back = localStorage.getItem('theme-background');
+
+        if (prim && Object.keys(themesPrimary).includes(prim)) setThemePrimary(prim);
+        if (back && Object.keys(themesBackground).includes(back)) setThemeBackground(back);
+    }, []);
 
     const getAllTrains = async() => {
         const response = await fetch('/api/all-trains');
@@ -175,8 +183,14 @@ const App = () => {
     const themeContextValue = {
         selectedPrimary: themePrimary,
         selectedBackground: themeBackground,
-        setSelectedPrimary: setThemePrimary,
-        setSelectedBackground: setThemeBackground
+        setSelectedPrimary: (theme: string) => {
+            setThemePrimary(theme);
+            localStorage.setItem('theme-primary', theme);
+        },
+        setSelectedBackground: (theme: string) => {
+            setThemeBackground(theme);
+            localStorage.setItem('theme-background', theme);
+        }
     }
 
     return (
